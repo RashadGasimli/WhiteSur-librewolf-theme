@@ -9,15 +9,15 @@ MY_HOME=$(getent passwd "${MY_USERNAME}" | cut -d: -f6)
 
 THEME_NAME="WhiteSur"
 
-edit_firefox="false"
+edit_librewolf="false"
 
-FIREFOX_SRC_DIR="${REPO_DIR}/src"
-FIREFOX_DIR_HOME="${MY_HOME}/.mozilla/firefox"
-FIREFOX_THEME_DIR="${MY_HOME}/.mozilla/firefox/firefox-themes"
-FIREFOX_FLATPAK_DIR_HOME="${MY_HOME}/.var/app/org.mozilla.firefox/.mozilla/firefox"
-FIREFOX_FLATPAK_THEME_DIR="${MY_HOME}/.var/app/org.mozilla.firefox/.mozilla/firefox/firefox-themes"
-FIREFOX_SNAP_DIR_HOME="${MY_HOME}/snap/firefox/common/.mozilla/firefox"
-FIREFOX_SNAP_THEME_DIR="${MY_HOME}/snap/firefox/common/.mozilla/firefox/firefox-themes"
+LIBREWOLF_SRC_DIR="${REPO_DIR}/src"
+LIBREWOLF_DIR_HOME="${MY_HOME}/.librewolf"
+LIBREWOLF_THEME_DIR="${MY_HOME}/.librewolf/firefox-themes"
+LIBREWOLF_FLATPAK_DIR_HOME="${MY_HOME}/.var/app/io.gitlab.librewolf-community/.librewolf"
+LIBREWOLF_FLATPAK_THEME_DIR="${MY_HOME}/.var/app/io.gitlab.librewolf-community/.librewolf/firefox-themes"
+LIBREWOLF_SNAP_DIR_HOME="${MY_HOME}/snap/librewolf/common/.librewolf"
+LIBREWOLF_SNAP_THEME_DIR="${MY_HOME}/snap/librewolf/common/.librewolf/firefox-themes"
 
 export c_default="\033[0m"
 export c_blue="\033[1;34m"
@@ -69,59 +69,59 @@ helpify() {
 
 usage() {
   helpify_title
-  helpify "-m, --monterey"          ""                                   "Install 'Monterey' theme for Firefox and connect it to the current Firefox profiles"                        ""
-  helpify "-a, --alt"               ""                                   "Install 'Monterey' theme alt version for Firefox and connect it to the current Firefox profiles"            ""
-  helpify "-e, --edit"              ""                                   "Edit '${THEME_NAME}' theme for Firefox settings and also connect the theme to the current Firefox profiles" ""
+  helpify "-m, --monterey"          ""                                   "Install 'Monterey' theme for Librewolf and connect it to the current Librewolf profiles"                        ""
+  helpify "-a, --alt"               ""                                   "Install 'Monterey' theme alt version for Librewolf and connect it to the current Librewolf profiles"            ""
+  helpify "-e, --edit"              ""                                   "Edit '${THEME_NAME}' theme for Librewolf settings and also connect the theme to the current Librewolf profiles" ""
   helpify "-r, --remove, --revert"  ""                                   "Remove themes, do the opposite things of install and connect"                                               ""
   helpify "-h, --help"              ""                                   "Show this help"                                                                                             ""
 }
 
-install_firefox_theme() {
-  if has_snap_app firefox; then
-    local TARGET_DIR="${FIREFOX_SNAP_THEME_DIR}"
-  elif has_flatpak_app org.mozilla.firefox; then
-    local TARGET_DIR="${FIREFOX_FLATPAK_THEME_DIR}"
+install_librewolf_theme() {
+  if has_snap_app librewolf; then
+    local TARGET_DIR="${LIBREWOLF_SNAP_THEME_DIR}"
+  elif has_flatpak_app io.gitlab.librewolf-community; then
+    local TARGET_DIR="${LIBREWOLF_FLATPAK_THEME_DIR}"
   else
-    local TARGET_DIR="${FIREFOX_THEME_DIR}"
+    local TARGET_DIR="${LIBREWOLF_THEME_DIR}"
   fi
 
   local name=${1}
 
   mkdir -p                                                                                    "${TARGET_DIR}"
-  cp -rf "${FIREFOX_SRC_DIR}/${name}"                                                         "${TARGET_DIR}"
+  cp -rf "${LIBREWOLF_SRC_DIR}/${name}"                                                         "${TARGET_DIR}"
   [[ -f "${TARGET_DIR}"/customChrome.css ]] && mv "${TARGET_DIR}"/customChrome.css "${TARGET_DIR}"/customChrome.css.bak
-  cp -rf "${FIREFOX_SRC_DIR}"/customChrome.css                                                "${TARGET_DIR}"
-  cp -rf "${FIREFOX_SRC_DIR}"/common/{icons,titlebuttons,pages}                               "${TARGET_DIR}/${name}"
-  cp -rf "${FIREFOX_SRC_DIR}"/common/*.css                                                    "${TARGET_DIR}/${name}"
-  cp -rf "${FIREFOX_SRC_DIR}"/common/parts/*.css                                              "${TARGET_DIR}/${name}"/parts
+  cp -rf "${LIBREWOLF_SRC_DIR}"/customChrome.css                                                "${TARGET_DIR}"
+  cp -rf "${LIBREWOLF_SRC_DIR}"/common/{icons,titlebuttons,pages}                               "${TARGET_DIR}/${name}"
+  cp -rf "${LIBREWOLF_SRC_DIR}"/common/*.css                                                    "${TARGET_DIR}/${name}"
+  cp -rf "${LIBREWOLF_SRC_DIR}"/common/parts/*.css                                              "${TARGET_DIR}/${name}"/parts
   [[ -f "${TARGET_DIR}"/userChrome.css ]] && mv "${TARGET_DIR}"/userChrome.css "${TARGET_DIR}"/userChrome.css.bak
-  cp -rf "${FIREFOX_SRC_DIR}"/userChrome-"${name}".css                                        "${TARGET_DIR}"/userChrome.css
+  cp -rf "${LIBREWOLF_SRC_DIR}"/userChrome-"${name}".css                                        "${TARGET_DIR}"/userChrome.css
   [[ -f "${TARGET_DIR}"/userContent.css ]] && mv "${TARGET_DIR}"/userContent.css "${TARGET_DIR}"/userContent.css.bak
-  cp -rf "${FIREFOX_SRC_DIR}"/userContent-"${name}".css                                       "${TARGET_DIR}"/userContent.css
+  cp -rf "${LIBREWOLF_SRC_DIR}"/userContent-"${name}".css                                       "${TARGET_DIR}"/userContent.css
 
   if [[ "${alt}" == 'true' && "${name}" == 'Monterey' ]]; then
-    cp -rf "${FIREFOX_SRC_DIR}"/userChrome-Monterey-alt.css                                   "${TARGET_DIR}"/userChrome.css
-    cp -rf "${FIREFOX_SRC_DIR}"/WhiteSur/parts/headerbar-urlbar.css                           "${TARGET_DIR}"/Monterey/parts/headerbar-urlbar-alt.css
+    cp -rf "${LIBREWOLF_SRC_DIR}"/userChrome-Monterey-alt.css                                   "${TARGET_DIR}"/userChrome.css
+    cp -rf "${LIBREWOLF_SRC_DIR}"/WhiteSur/parts/headerbar-urlbar.css                           "${TARGET_DIR}"/Monterey/parts/headerbar-urlbar-alt.css
   fi
 
-  config_firefox
+  config_librewolf
 }
 
-config_firefox() {
-  if has_snap_app firefox; then
-    local TARGET_DIR="${FIREFOX_SNAP_THEME_DIR}"
-    local FIREFOX_DIR="${FIREFOX_SNAP_DIR_HOME}"
-  elif has_flatpak_app org.mozilla.firefox; then
-    local TARGET_DIR="${FIREFOX_FLATPAK_THEME_DIR}"
-    local FIREFOX_DIR="${FIREFOX_FLATPAK_DIR_HOME}"
+config_librewolf() {
+  if has_snap_app librewolf; then
+    local TARGET_DIR="${LIBREWOLF_SNAP_THEME_DIR}"
+    local LIBREWOLF_DIR="${LIBREWOLF_SNAP_DIR_HOME}"
+  elif has_flatpak_app io.gitlab.librewolf-community; then
+    local TARGET_DIR="${LIBREWOLF_FLATPAK_THEME_DIR}"
+    local LIBREWOLF_DIR="${LIBREWOLF_FLATPAK_DIR_HOME}"
   else
-    local TARGET_DIR="${FIREFOX_THEME_DIR}"
-    local FIREFOX_DIR="${FIREFOX_DIR_HOME}"
+    local TARGET_DIR="${LIBREWOLF_THEME_DIR}"
+    local LIBREWOLF_DIR="${LIBREWOLF_DIR_HOME}"
   fi
 
-  killall "firefox" "firefox-bin" &> /dev/null || true
+  killall "librewolf" "librewolf-bin" &> /dev/null || true
 
-  for d in "${FIREFOX_DIR}/"*"default"*; do
+  for d in "${LIBREWOLF_DIR}/"*"default"*; do
     if [[ -f "${d}/prefs.js" ]]; then
       rm -rf                                                                                  "${d}/chrome"
       ln -sf "${TARGET_DIR}"                                                                  "${d}/chrome"
@@ -135,33 +135,33 @@ config_firefox() {
   done
 }
 
-edit_firefox_theme_prefs() {
-  if has_snap_app firefox; then
-    local TARGET_DIR="${FIREFOX_SNAP_THEME_DIR}"
-  elif has_flatpak_app org.mozilla.firefox; then
-    local TARGET_DIR="${FIREFOX_FLATPAK_THEME_DIR}"
+edit_librewolf_theme_prefs() {
+  if has_snap_app librewolf; then
+    local TARGET_DIR="${LIBREWOLF_SNAP_THEME_DIR}"
+  elif has_flatpak_app io.gitlab.librewolf-community; then
+    local TARGET_DIR="${LIBREWOLF_FLATPAK_THEME_DIR}"
   else
-    local TARGET_DIR="${FIREFOX_THEME_DIR}"
+    local TARGET_DIR="${LIBREWOLF_THEME_DIR}"
   fi
 
-  install_firefox_theme ; config_firefox
+  install_librewolf_theme ; config_librewolf
   ${EDITOR:-nano}                                                                            "${TARGET_DIR}/userChrome.css"
   ${EDITOR:-nano}                                                                            "${TARGET_DIR}/customChrome.css"
 }
 
-remove_firefox_theme() {
-  #rm -rf "${FIREFOX_DIR_HOME}/"*"default"*"/chrome"
-  rm -rf "${FIREFOX_THEME_DIR}/${THEME_NAME}"
-  [[ -f "${FIREFOX_THEME_DIR}"/customChrome.css ]] && rm -rf "${FIREFOX_THEME_DIR}"/customChrome.css
-  [[ -f "${FIREFOX_THEME_DIR}"/userChrome.css ]] && rm -rf "${FIREFOX_THEME_DIR}"/userChrome.css
-  #rm -rf "${FIREFOX_FLATPAK_DIR_HOME}/"*"default"*"/chrome"
-  rm -rf "${FIREFOX_FLATPAK_THEME_DIR}/${THEME_NAME}"
-  [[ -f "${FIREFOX_FLATPAK_THEME_DIR}"/customChrome.css ]] && rm -rf "${FIREFOX_FLATPAK_THEME_DIR}"/customChrome.css
-  [[ -f "${FIREFOX_FLATPAK_THEME_DIR}"/userChrome.css ]] && rm -rf "${FIREFOX_FLATPAK_THEME_DIR}"/userChrome.css
-  #rm -rf "${FIREFOX_SNAP_DIR_HOME}/"*"default"*"/chrome"
-  rm -rf "${FIREFOX_SNAP_THEME_DIR}/${THEME_NAME}"
-  [[ -f "${FIREFOX_SNAP_THEME_DIR}"/customChrome.css ]] && rm -rf "${FIREFOX_SNAP_THEME_DIR}"/customChrome.css
-  [[ -f "${FIREFOX_SNAP_THEME_DIR}"/userChrome.css ]] && rm -rf "${FIREFOX_SNAP_THEME_DIR}"/userChrome.css
+remove_librewolf_theme() {
+  #rm -rf "${LIBREWOLF_DIR_HOME}/"*"default"*"/chrome"
+  rm -rf "${LIBREWOLF_THEME_DIR}/${THEME_NAME}"
+  [[ -f "${LIBREWOLF_THEME_DIR}"/customChrome.css ]] && rm -rf "${LIBREWOLF_THEME_DIR}"/customChrome.css
+  [[ -f "${LIBREWOLF_THEME_DIR}"/userChrome.css ]] && rm -rf "${LIBREWOLF_THEME_DIR}"/userChrome.css
+  #rm -rf "${LIBREWOLF_FLATPAK_DIR_HOME}/"*"default"*"/chrome"
+  rm -rf "${LIBREWOLF_FLATPAK_THEME_DIR}/${THEME_NAME}"
+  [[ -f "${LIBREWOLF_FLATPAK_THEME_DIR}"/customChrome.css ]] && rm -rf "${LIBREWOLF_FLATPAK_THEME_DIR}"/customChrome.css
+  [[ -f "${LIBREWOLF_FLATPAK_THEME_DIR}"/userChrome.css ]] && rm -rf "${LIBREWOLF_FLATPAK_THEME_DIR}"/userChrome.css
+  #rm -rf "${LIBREWOLF_SNAP_DIR_HOME}/"*"default"*"/chrome"
+  rm -rf "${LIBREWOLF_SNAP_THEME_DIR}/${THEME_NAME}"
+  [[ -f "${LIBREWOLF_SNAP_THEME_DIR}"/customChrome.css ]] && rm -rf "${LIBREWOLF_SNAP_THEME_DIR}"/customChrome.css
+  [[ -f "${LIBREWOLF_SNAP_THEME_DIR}"/userChrome.css ]] && rm -rf "${LIBREWOLF_SNAP_THEME_DIR}"/userChrome.css
 }
 
 echo
@@ -183,15 +183,15 @@ while [[ $# -gt 0 ]]; do
       echo; usage; echo
       exit 0 ;;
     -e|--edit)
-      edit_firefox='true'
+      edit_librewolf='true'
 
-      if ! has_command firefox && ! has_flatpak_app org.mozilla.firefox && ! has_snap_app firefox; then
-        prompt -e "'${1}' ERROR: There's no Firefox installed in your system"
-      elif [[ ! -d "${FIREFOX_DIR_HOME}" && ! -d "${FIREFOX_FLATPAK_DIR_HOME}" && ! -d "${FIREFOX_SNAP_DIR_HOME}" ]]; then
-        prompt -e "'${1}' ERROR: Firefox is installed but not yet initialized."
+      if ! has_command librewolf && ! has_flatpak_app io.gitlab.librewolf-community && ! has_snap_app librewolf; then
+        prompt -e "'${1}' ERROR: There's no Librewolf installed in your system"
+      elif [[ ! -d "${LIBREWOLF_DIR_HOME}" && ! -d "${LIBREWOLF_FLATPAK_DIR_HOME}" && ! -d "${LIBREWOLF_SNAP_DIR_HOME}" ]]; then
+        prompt -e "'${1}' ERROR: Librewolf is installed but not yet initialized."
         prompt -w "'${1}': Don't forget to close it after you run/initialize it"
-      elif pidof "firefox" &> /dev/null || pidof "firefox-bin" &> /dev/null; then
-        prompt -e "'${1}' ERROR: Firefox is running, please close it"
+      elif pidof "librewolf" &> /dev/null || pidof "librewolf-bin" &> /dev/null; then
+        prompt -e "'${1}' ERROR: Librewolf is running, please close it"
       fi; shift ;;
     *)
       prompt -e "ERROR: Unrecognized tweak option '${1}'."
@@ -200,20 +200,20 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ "${uninstall}" == 'true' ]]; then
-    prompt -i "Removing '${THEME_NAME}' Firefox theme...\n"
-    remove_firefox_theme
-    prompt -s "Done! '${THEME_NAME}' Firefox theme has been removed."
+    prompt -i "Removing '${THEME_NAME}' Librewolf theme...\n"
+    remove_librewolf_theme
+    prompt -s "Done! '${THEME_NAME}' Librewolf theme has been removed."
 else
-    prompt -i "Installing '${THEME_NAME}' Firefox theme...\n"
-    install_firefox_theme "${name:-${THEME_NAME}}"
-    prompt -s "Done! '${THEME_NAME}' Firefox theme has been installed.\n"
+    prompt -i "Installing '${THEME_NAME}' Librewolf theme...\n"
+    install_librewolf_theme "${name:-${THEME_NAME}}"
+    prompt -s "Done! '${THEME_NAME}' Librewolf theme has been installed.\n"
 
-    if [[ "${edit_firefox}" == 'true' ]]; then
-      prompt -i "Editing '${THEME_NAME}' Firefox theme preferences...\n"
-      edit_firefox_theme_prefs
-      prompt -s "Done! '${THEME_NAME}' Firefox theme preferences has been edited.\n"
+    if [[ "${edit_librewolf}" == 'true' ]]; then
+      prompt -i "Editing '${THEME_NAME}' Librewolf theme preferences...\n"
+      edit_librewolf_theme_prefs
+      prompt -s "Done! '${THEME_NAME}' Librewolf theme preferences has been edited.\n"
     fi
 
-    prompt -w "FIREFOX: Please go to [Firefox menu] > [Customize...], and customize your Firefox to make it work. Move your 'new tab' button to the titlebar instead of tab-switcher.\n"
-    prompt -i "FIREFOX: Anyways, you can also edit 'userChrome.css' and 'customChrome.css' later in your Firefox profile directory.\n"
+    prompt -w "LIBREWOLF: Please go to [Librewolf menu] > [Customize...], and customize your Librewolf to make it work. Move your 'new tab' button to the titlebar instead of tab-switcher.\n"
+    prompt -i "LIBREWOLF: Anyways, you can also edit 'userChrome.css' and 'customChrome.css' later in your Librewolf profile directory.\n"
 fi
