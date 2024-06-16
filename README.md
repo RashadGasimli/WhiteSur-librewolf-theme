@@ -1,11 +1,11 @@
 
-## <p align="center">Firefox Safari theme</p>
+## <p align="center">Librewolf Safari theme</p>
 
-<p align="center">A MacOSX Safari theme for Firefox 80+</p>
+<p align="center">A MacOSX Safari theme for Librewolf 80+</p>
 
 ![01](https://github.com/vinceliuice/WhiteSur-gtk-theme/blob/pictures/pictures/firefox.svg?raw=true)
 
-This is a bunch of CSS code to make Firefox look closer to MacOSX Safari theme.
+This is a bunch of CSS code to make Librewolf look closer to MacOSX Safari theme.
 
 Based on https://github.com/rafaelmardojai/firefox-gnome-theme
 
@@ -21,13 +21,13 @@ Usage:  `./install.sh`  **[OPTIONS...]**
 
 ```
   -m, --monterey 
- Install 'Monterey' theme for Firefox and connect it to the current Firefox profiles. 
+ Install 'Monterey' theme for Librewolf and connect it to the current Firefox profiles. 
 
   -a, --alt 
- Install 'Monterey' theme alt version for Firefox and connect it to the current Firefox profiles. 
+ Install 'Monterey' theme alt version for Librewolf and connect it to the current Firefox profiles. 
 
   -e, --edit 
- Edit 'WhiteSur' theme for Firefox settings and also connect the theme to the current Firefox profiles. 
+ Edit 'WhiteSur' theme for Librewolf settings and also connect the theme to the current Firefox profiles. 
 
   -r, --remove, --revert 
  Remove themes, do the opposite things of install and connect. 
@@ -53,13 +53,13 @@ AdamXweb - WhiteSurFirefoxThemeMacOS: https://github.com/AdamXweb/WhiteSurFirefo
 
 ### Manual installation
 
-1. Go to `about:support` in Firefox.
+1. Go to `about:support` in Librewolf.
 2. Application Basics > Profile Directory > Open Directory.
 3. Copy `chrome` folder Firefox config folder.
 4. If you are using Firefox 69+:
 	1. Go to `about:config` in Firefox.
 	2. Search for `toolkit.legacyUserProfileCustomizations.stylesheets` and set it to `true`.
-5. Restart Firefox.
+5. Restart Librewolf.
 6. Open Firefox customization panel and:
 	1. Use *Title bar* option to toggle CSD if is not set by default.
 	2. Move the new tab button to headerbar.
@@ -77,13 +77,13 @@ See upstream [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1408360).
 #### Wayland fix:
 1. Go to the `about:config` page
 2. Search for the `layers.acceleration.force-enabled` preference and set it to true.
-3. Now restart Firefox, and it should look good!
+3. Now restart Librewolf, and it should look good!
 
 #### X11 fix:
 1. Go to the `about:config` page
 2. Type `mozilla.widget.use-argb-visuals`
 3. Set it as a `boolean` and click on the add button
-4. Now restart Firefox, and it should look good!
+4. Now restart Librewolf, and it should look good!
 
 ## Development
 
