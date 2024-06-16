@@ -55,12 +55,12 @@ AdamXweb - WhiteSurFirefoxThemeMacOS: https://github.com/AdamXweb/WhiteSurFirefo
 
 1. Go to `about:support` in Librewolf.
 2. Application Basics > Profile Directory > Open Directory.
-3. Copy `chrome` folder Firefox config folder.
-4. If you are using Firefox 69+:
-	1. Go to `about:config` in Firefox.
+3. Copy `chrome` folder Librewolf config folder.
+4. If you are using Librewolf 69+:
+	1. Go to `about:config` in Librewolf.
 	2. Search for `toolkit.legacyUserProfileCustomizations.stylesheets` and set it to `true`.
 5. Restart Librewolf.
-6. Open Firefox customization panel and:
+6. Open Librewolf customization panel and:
 	1. Use *Title bar* option to toggle CSD if is not set by default.
 	2. Move the new tab button to headerbar.
 	3. Select light or dark variants on theme switcher.
