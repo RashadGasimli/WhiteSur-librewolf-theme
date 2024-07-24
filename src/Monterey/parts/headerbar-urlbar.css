@@ -2,20 +2,19 @@
 
 @namespace xul "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 
-#urlbar {
-	--urlbar-height: 32px !important;
-	--urlbar-container-height: 32px !important;
-	--urlbar-toolbar-height: 32px !important;
-	--urlbar-inner-padding: 0 !important;
-}
-
 toolbarspring {
 	display: none !important;
 }
 
 /* URL bar */
 #urlbar {
+	--urlbar-height: 32px !important;
+	--urlbar-container-height: 32px !important;
+	--urlbar-toolbar-height: 32px !important;
+	--urlbar-inner-padding: 0 !important;
 	box-shadow: none !important;
+	width: 360px !important;
+	min-width: 360px !important;
 }
 
 #urlbar-background {
@@ -36,7 +35,8 @@ toolbarspring {
 
 #urlbar-container,
 #wrapper-urlbar-container,
-#urlbar #urlbar-input-container {
+#urlbar #urlbar-input-container,
+#urlbar .urlbar-input-container {
 	padding: 0 !important;
 	width: 360px !important;
 	min-width: 360px !important;
@@ -61,7 +61,8 @@ toolbarspring {
 	height: auto !important;
 	max-height: unset !important;
 }
-#urlbar[breakout][breakout-extend] #urlbar-input-container {
+#urlbar[breakout][breakout-extend] #urlbar-input-container,
+#urlbar[breakout][breakout-extend] .urlbar-input-container {
 	height: 32px !important;
 	max-height: 32px !important;
 	padding: 0 !important;
@@ -145,7 +146,19 @@ toolbarspring {
 	margin-left: 6px !important;
 }
 
+#identity-box[pageproxystate="invalid"] > .identity-box-button,
+#urlbar:not(.searchButton) > #urlbar-input-container > #identity-box[pageproxystate="invalid"] > .identity-box-button {
+	padding-inline: 6px !important;
+}
+
 /* URL bar and Search bar */
+#urlbar[focused],
+#searchbar:focus-within {
+	outline: none !important;
+	border: none !important;
+	box-shadow: none !important;
+}
+
 #urlbar[focused] .urlbar-textbox-container {
 	margin: -1px !important;
 }
@@ -168,11 +181,6 @@ toolbarspring {
 	fill-opacity: 1 !important;
 }
 
-#identity-box {
-	margin: 3px 2px !important;
-	border-radius: 5px !important;
-}
-
 #notification-popup-box {
 	height: 26px !important;
 	border-radius: 5px !important;
@@ -185,6 +193,15 @@ toolbarspring {
 	margin: 3px 0 !important;
 	padding: 4px 6px !important;
 	border-radius: 5px !important;
+}
+
+#identity-box {
+	margin: 3px 2px !important;
+	border-radius: 5px !important;
+}
+
+#identity-box[pageproxystate="valid"].chromeUI {
+	margin-left: 0 !important;
 }
 
 #identity-box:hover {
